@@ -38,7 +38,8 @@ gem "bootsnap", require: false
   # gem 'bcrypt', '~> 3.1.7'
   gem 'faraday'
   gem 'figaro'
-
+  gem "jsonapi-serializer"
+  
 group :test do
   gem "capybara"
   gem "factory_bot_rails"

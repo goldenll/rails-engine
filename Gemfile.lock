@@ -115,6 +115,8 @@ GEM
     irb (1.7.1)
       reline (>= 0.3.0)
     json (2.6.3)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     language_server-protocol (3.17.0.3)
     launchy (2.5.2)
       addressable (~> 2.8)
@@ -270,6 +272,7 @@ DEPENDENCIES
   faker
   faraday
   figaro
+  jsonapi-serializer
   launchy
   orderly
   pg (~> 1.1)
