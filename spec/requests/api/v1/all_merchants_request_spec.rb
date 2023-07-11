@@ -24,9 +24,9 @@ describe "Merchants API" do
   it "can get one merchant by its id" do
     id = create(:merchant).id
 
-    get "/api/v1/merchants#{id}"
+    get "/api/v1/merchants/#{id}"
 
-    merchants = JSON.parse(response.body, symbolize_names: true)
+    merchant = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful
 
