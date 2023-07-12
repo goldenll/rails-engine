@@ -25,3 +25,4 @@ describe "Merchant Items API" do
     end
   end
 end
+# return a 404 if merchant is not found

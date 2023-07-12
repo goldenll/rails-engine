@@ -83,6 +83,8 @@ describe "Items API" do
     expect(created_item.unit_price).to eq(item_params[:unit_price])
     expect(created_item.merchant_id).to eq(item_params[:merchant_id])
   end
+# return an error if any attribute is missing
+# should ignore any attributes sent by the user which are not allowed
 
   it "can destroy an item" do
     id = create(:merchant).id
@@ -96,6 +98,8 @@ describe "Items API" do
     expect(Item.count).to eq(0)
     expect{Item.find(item1.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
+  # NOT return any JSON body at all, and should return a 204 HTTP status code
+  # NOT utilize a Serializer (Rails will handle sending a 204 on its own if you just .destroy the object)
 
   it "can update an existing item" do
     merchant_id = create(:merchant).id
@@ -112,6 +116,8 @@ describe "Items API" do
     expect(item.name).to_not eq(previous_name)
     expect(item.name).to eq("pizza")
   end
+# return an error if any attribute is missing
+# should ignore any attributes sent by the user which are not allowed
 
   it "can get an items merchant" do
     merchant1 = create(:merchant)
@@ -124,9 +130,16 @@ describe "Items API" do
     expect(response.status).to eq(200)
     expect(new_item).to have_key(:data)
     expect(new_item[:data]).to be_a(Hash)
-# require 'pry'; binding.pry
+
     expect(new_item[:data][:attributes]).to have_key(:name)
     expect(new_item[:data][:attributes][:name]).to be_a(String)
     expect(new_item[:data][:attributes][:name]).to eq(merchant1.name)
   end
+
+  xit "can find all items based on search criteria" do
+
+    
+  end
 end
+# return a 404 if the item is not found
+

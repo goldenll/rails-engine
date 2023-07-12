@@ -41,4 +41,13 @@ describe "Merchants API" do
     expect(merchant[:data][:attributes]).to have_key(:name)
     expect(merchant[:data][:attributes][:name]).to be_a(String)
   end
+
+  xit "can find one merchant based on search criteria" do
+    @merchant1 = Merchant.create!(name: "Alfredo's Pizza Cafe")
+    @merchant2 = Merchant.create!(name: "Pizza by Alfredo")
+    @merchant3 = Merchant.create!(name: "Poor Richard's Pub")
+    @merchant4 = Merchant.create!(name: "Steamtown Mall")
+
+    
+  end
 end
