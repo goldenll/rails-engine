@@ -114,20 +114,19 @@ describe "Items API" do
   end
 
   it "can get an items merchant" do
-    merch_id = create(:merchant).id
-    item1 = create(:item, merchant_id: merch_id)
+    merchant1 = create(:merchant)
+    item1 = create(:item, merchant_id: merchant1.id)
 
     get "/api/v1/items/#{item1.id}/merchant"
-    
+
     new_item = JSON.parse(response.body, symbolize_names: true)
     expect(response).to be_successful
     expect(response.status).to eq(200)
     expect(new_item).to have_key(:data)
     expect(new_item[:data]).to be_a(Hash)
-
-    expect(new_item[:data][:attributes]).to have_key(:merchant_id)
-    expect(new_item[:data][:attributes][:merchant_id]).to be_an(Integer)
-    expect(new_item[:data][:attributes][:merchant_id]).to eq(id)
-
+# require 'pry'; binding.pry
+    expect(new_item[:data][:attributes]).to have_key(:name)
+    expect(new_item[:data][:attributes][:name]).to be_a(String)
+    expect(new_item[:data][:attributes][:name]).to eq(merchant1.name)
   end
 end
