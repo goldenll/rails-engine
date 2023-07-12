@@ -9,7 +9,9 @@ describe "Merchants API" do
     merchants = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful
-
+    expect(response.status).to eq(200)
+    expect(merchants).to have_key(:data)
+    expect(merchants[:data]).to be_an(Array)
     expect(merchants[:data].count).to eq(3)
 
     merchants[:data].each do |merchant|
@@ -29,7 +31,10 @@ describe "Merchants API" do
     merchant = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful
-    
+    expect(response.status).to eq(200)
+    expect(merchant).to have_key(:data)
+    expect(merchant[:data]).to be_a(Hash)
+
     expect(merchant[:data]).to have_key(:id)
     expect(merchant[:data][:id]).to eq("#{id}")
 
