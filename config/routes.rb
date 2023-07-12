@@ -5,10 +5,10 @@ Rails.application.routes.draw do
   # root "articles#index"
   namespace :api do
     namespace :v1 do
-      resources :merchants do 
-        resources :items, controller: "merchants/items"
+      resources :merchants, only: [:index, :show] do 
+        resources :items, only: [:index], controller: "merchants/items"
       end
-      resources :items
+      resources :items, only: [:index, :show, :create]
     end
   end
 end

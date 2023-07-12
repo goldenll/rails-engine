@@ -29,6 +29,7 @@ describe "Items API" do
       expect(item[:attributes][:unit_price]).to be_a(Float)
       
       expect(item[:attributes]).to have_key(:merchant_id)
+      expect(item[:attributes][:merchant_id]).to be_an(Integer)
       expect(item[:attributes][:merchant_id]).to eq(id)
     end
   end
@@ -58,6 +59,28 @@ describe "Items API" do
     expect(item[:data][:attributes][:unit_price]).to be_a(Float)
 
     expect(item[:data][:attributes]).to have_key(:merchant_id)
+    expect(item[:data][:attributes][:merchant_id]).to be_an(Integer)
     expect(item[:data][:attributes][:merchant_id]).to eq(id)
+  end
+
+  it "can create a new item" do
+    id = create(:merchant).id
+    item_params = ({
+                    name: "pizza", 
+                    description: "cheesy yummy carbs", 
+                    unit_price: 20, 
+                    merchant_id: id
+                  })
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    post "/api/v1/items", headers: headers, params: JSON.generate(item: item_params)
+    created_item = Item.last
+
+    expect(response).to be_successful
+
+    expect(created_item.name).to eq(item_params[:name])
+    expect(created_item.description).to eq(item_params[:description])
+    expect(created_item.unit_price).to eq(item_params[:unit_price])
+    expect(created_item.merchant_id).to eq(item_params[:merchant_id])
   end
 end
