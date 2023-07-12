@@ -31,19 +31,29 @@ describe "Items API" do
     end
   end
 
-  xit "can get one item by its id" do
-    id = create(:item).id
+  it "can get one item by its id" do
+    id = create(:merchant).id
+    item1 = create(:item, merchant_id: id)
 
-    get "/api/v1/items/#{id}"
+    get "/api/v1/items/#{item1.id}"
 
     item = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful
     
     expect(item[:data]).to have_key(:id)
-    expect(item[:data][:id]).to eq("#{id}")
+    expect(item[:data][:id]).to eq("#{item1.id}")
 
     expect(item[:data][:attributes]).to have_key(:name)
     expect(item[:data][:attributes][:name]).to be_a(String)
+
+    expect(item[:data][:attributes]).to have_key(:description)
+    expect(item[:data][:attributes][:description]).to be_a(String)
+
+    expect(item[:data][:attributes]).to have_key(:unit_price)
+    expect(item[:data][:attributes][:unit_price]).to be_a(Float)
+
+    expect(item[:data][:attributes]).to have_key(:merchant_id)
+    expect(item[:data][:attributes][:merchant_id]).to eq(id)
   end
 end
