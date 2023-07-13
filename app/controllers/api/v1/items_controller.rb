@@ -23,15 +23,7 @@ class Api::V1::ItemsController < ApplicationController
       render(status: 404, json: { error: 'Item not found' })
     end
   end
-  # def update
-  #   item = Item.update(params[:id], item_params)
-  #   if item.save 
-  #     render(json: ItemSerializer.new(Item.update(params[:id], item_params)))
-  #   else 
-  #     render :status => 404, json: { error: 'Item not found' }
-  #   end
-  # end
-  
+
   private
     def item_params
       params.require(:item).permit(:name, :description, :unit_price, :merchant_id)

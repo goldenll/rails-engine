@@ -136,8 +136,15 @@ describe "Items API" do
     expect(new_item[:data][:attributes][:name]).to eq(merchant1.name)
   end
 
-  xit "can find all items based on search criteria" do
+  xit "can find all items based on name search" do
 
+    get "http://localhost:3000/api/v1/items/find_all?name=hArU"
+    
+  end
+
+  xit "can find all items based on price search" do
+
+    get "http://localhost:3000/api/v1/items/find_all?min_price=999"
     
   end
 end

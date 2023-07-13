@@ -42,12 +42,21 @@ describe "Merchants API" do
     expect(merchant[:data][:attributes][:name]).to be_a(String)
   end
 
-  xit "can find one merchant based on search criteria" do
-    @merchant1 = Merchant.create!(name: "Alfredo's Pizza Cafe")
-    @merchant2 = Merchant.create!(name: "Pizza by Alfredo")
-    @merchant3 = Merchant.create!(name: "Poor Richard's Pub")
-    @merchant4 = Merchant.create!(name: "Steamtown Mall")
+  it "can find one merchant based on search criteria" do
+    merchant1 = Merchant.create!(name: "Alfredos Pizza Cafe")
+    merchant2 = Merchant.create!(name: "Pizza by Alfredo")
 
+    get "/api/v1/merchants/find?name=Alfredos"
     
+    merchant = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to be_successful
+    expect(response.status).to eq(200)
+
+    expect(merchant[:data][:attributes]).to be_a(Hash)
+    expect(merchant[:data][:attributes]).to have_key(:name)
+    expect(merchant[:data][:attributes][:name]).to be_a(String)
+    expect(merchant[:data][:attributes][:name]).to eq(merchant1.name)
+    expect(merchant[:data][:attributes][:name]).to_not eq(merchant2.name)
   end
 end

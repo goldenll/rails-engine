@@ -3,8 +3,13 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+
+
   namespace :api do
     namespace :v1 do
+
+      get "/merchants/find", to: "merchants/search#search"
+
       resources :merchants, only: [:index, :show] do 
         resources :items, only: [:index], controller: "merchants/items"
       end
@@ -13,6 +18,6 @@ Rails.application.routes.draw do
       end
     end
   end
+end
   # get "/api/v1/items/:id/merchant", to: "items/merchant#index"
 
-end
