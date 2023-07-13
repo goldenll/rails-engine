@@ -19,5 +19,3 @@ Rails.application.routes.draw do
     end
   end
 end
-  # get "/api/v1/items/:id/merchant", to: "items/merchant#index"
-

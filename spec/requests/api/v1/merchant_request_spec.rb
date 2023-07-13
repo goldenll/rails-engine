@@ -59,4 +59,48 @@ describe "Merchants API" do
     expect(merchant[:data][:attributes][:name]).to eq(merchant1.name)
     expect(merchant[:data][:attributes][:name]).to_not eq(merchant2.name)
   end
+
+  it "can find one merchant based on a search criteria partial match" do
+    merchant1 = Merchant.create!(name: "Alfredos Pizza Cafe")
+    merchant2 = Merchant.create!(name: "Pizza by Alfredo")
+
+    get "/api/v1/merchants/find?name=Fred"
+    
+    merchant = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to be_successful
+    expect(response.status).to eq(200)
+
+    expect(merchant[:data][:attributes]).to be_a(Hash)
+    expect(merchant[:data][:attributes]).to have_key(:name)
+    expect(merchant[:data][:attributes][:name]).to be_a(String)
+    expect(merchant[:data][:attributes][:name]).to eq(merchant1.name)
+    expect(merchant[:data][:attributes][:name]).to_not eq(merchant2.name)
+  end
+
+  it "returns an error if invalid data is entered during search" do
+    merchant1 = Merchant.create!(name: "Alfredos Pizza Cafe")
+    merchant2 = Merchant.create!(name: "Pizza by Alfredo")
+
+    get "/api/v1/merchants/find?name="
+    
+    merchant = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq(404)
+    expect(merchant[:data]).to eq(nil)
+  end
+
+  it "returns an empty array if a match is not found with valid data" do
+    merchant1 = Merchant.create!(name: "Alfredos Pizza Cafe")
+    merchant2 = Merchant.create!(name: "Pizza by Alfredo")
+
+    get "/api/v1/merchants/find?name=x"
+    
+    merchant = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to be_successful
+    expect(response.status).to eq(200)
+    expect(merchant[:data][:id]).to eq(nil)
+  end
 end
