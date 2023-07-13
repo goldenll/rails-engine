@@ -50,6 +50,7 @@ group :test do
   gem "simplecov"
   gem "vcr"
   gem "webmock"
+  gem "shoulda-matchers"
 end
 
 group :development, :test do

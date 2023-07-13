@@ -44,7 +44,7 @@ describe "Merchants API" do
 
   it "can find one merchant based on search criteria" do
     merchant1 = Merchant.create!(name: "Alfredos Pizza Cafe")
-    merchant2 = Merchant.create!(name: "Pizza by Alfredo")
+    merchant2 = Merchant.create!(name: "Pizza by Alfredos")
 
     get "/api/v1/merchants/find?name=Alfredos"
     
