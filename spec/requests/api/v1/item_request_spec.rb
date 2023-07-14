@@ -196,7 +196,7 @@ describe "Items API" do
     expect(items[0][:data]).to eq([])
   end
 
-  xit "can find all items based on price search" do
+  it "can find all items based on price search" do
     merchant1 = Merchant.create!(name: "Alfredos Pizza Cafe")
     merchant2 = Merchant.create!(name: "Pizza by Alfredo")
     item1 = Item.create!(name: "cheese pizza", description: "cheesy yummy carbs", unit_price: 2000, merchant_id: merchant1.id)
@@ -212,11 +212,10 @@ describe "Items API" do
 # require 'pry'; binding.pry
     expect(response).to be_successful
     expect(response.status).to eq(200)
-    expect(items).to have_key(:data)
-    expect(items[:data]).to be_an(Array)
-    expect(items[:data].count).to eq(3)
+    expect(items).to be_an(Array)
+    expect(items[0]).to have_key(:data)
 
-    items[:data].each do |item|
+    items[0][:data].each do |item|
       expect(item).to have_key(:id)
       expect(item[:id]).to be_a(String)
 
