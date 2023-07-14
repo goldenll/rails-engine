@@ -149,7 +149,7 @@ describe "Items API" do
     get "/api/v1/items/find_all?name=pizza"
 
     items = JSON.parse(response.body, symbolize_names: true)
-# require 'pry'; binding.pry
+
     expect(response).to be_successful
     expect(response.status).to eq(200)
     expect(items).to be_an(Array)
@@ -209,11 +209,12 @@ describe "Items API" do
     get "/api/v1/items/find_all?min_price=999"
 
     items = JSON.parse(response.body, symbolize_names: true)
-# require 'pry'; binding.pry
+
     expect(response).to be_successful
     expect(response.status).to eq(200)
     expect(items).to be_an(Array)
     expect(items[0]).to have_key(:data)
+    # expect(items[0][:data].count).to eq(3)
 
     items[0][:data].each do |item|
       expect(item).to have_key(:id)
