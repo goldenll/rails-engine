@@ -5,7 +5,6 @@ class Api::V1::Items::SearchController < ApplicationController
     else
       render json: [ItemSerializer.new(Item.find_items(params[:name]))]
     end
-    # require 'pry'; binding.pry
     # render(status: 404, json: { error: "Items not found" })
   end
 end
