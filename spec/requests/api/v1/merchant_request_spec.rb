@@ -91,7 +91,7 @@ describe "Merchants API" do
     expect(merchant[:data]).to eq(nil)
   end
 
-  it "returns an empty array if a match is not found with valid data" do
+  it "returns an array if a match is not found with valid data" do
     merchant1 = Merchant.create!(name: "Alfredos Pizza Cafe")
     merchant2 = Merchant.create!(name: "Pizza by Alfredo")
 

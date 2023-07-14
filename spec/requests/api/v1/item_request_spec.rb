@@ -152,11 +152,11 @@ describe "Items API" do
 # require 'pry'; binding.pry
     expect(response).to be_successful
     expect(response.status).to eq(200)
-    expect(items).to have_key(:data)
-    expect(items[:data]).to be_an(Array)
-    expect(items[:data].count).to eq(4)
+    expect(items).to be_an(Array)
+    expect(items[0]).to have_key(:data)
+    expect(items[0][:data].count).to eq(4)
 
-    items[:data].each do |item|
+    items[0][:data].each do |item|
       expect(item).to have_key(:id)
       expect(item[:id]).to be_a(String)
 
@@ -175,7 +175,7 @@ describe "Items API" do
     end
   end
 
-  it "can find all items based on name search" do
+  it "returns an array if a match is not found with valid data" do
     merchant1 = Merchant.create!(name: "Alfredos Pizza Cafe")
     merchant2 = Merchant.create!(name: "Pizza by Alfredo")
     item1 = Item.create!(name: "cheese pizza", description: "cheesy yummy carbs", unit_price: 20, merchant_id: merchant1.id)
@@ -193,16 +193,46 @@ describe "Items API" do
     expect(response.status).to eq(200)
     expect(items).to be_an(Array)
     expect(items[0]).to have_key(:data)
-    expect(items[0][:data][:id]).to eq(nil)
-
+    expect(items[0][:data]).to eq([])
   end
 
   xit "can find all items based on price search" do
     merchant1 = Merchant.create!(name: "Alfredos Pizza Cafe")
     merchant2 = Merchant.create!(name: "Pizza by Alfredo")
+    item1 = Item.create!(name: "cheese pizza", description: "cheesy yummy carbs", unit_price: 2000, merchant_id: merchant1.id)
+    item2 = Item.create!(name: "pepperoni pizza", description: "pizza with the pepperoni", unit_price: 250, merchant_id: merchant1.id)
+    item3 = Item.create!(name: "spaghetti", description: "noodles with sauce and cheese", unit_price: 1500, merchant_id: merchant1.id)
+    item4 = Item.create!(name: "veggie pizza", description: "onion, mushroom, peppers", unit_price: 180, merchant_id: merchant2.id)
+    item5 = Item.create!(name: "white pizza", description: "pizza with white sauce", unit_price: 200, merchant_id: merchant2.id)
+    item6 = Item.create!(name: "tortellini", description: "stuffed pasta", unit_price: 1700, merchant_id: merchant2.id)
 
     get "/api/v1/items/find_all?min_price=999"
-    
+
+    items = JSON.parse(response.body, symbolize_names: true)
+# require 'pry'; binding.pry
+    expect(response).to be_successful
+    expect(response.status).to eq(200)
+    expect(items).to have_key(:data)
+    expect(items[:data]).to be_an(Array)
+    expect(items[:data].count).to eq(3)
+
+    items[:data].each do |item|
+      expect(item).to have_key(:id)
+      expect(item[:id]).to be_a(String)
+
+      expect(item[:attributes]).to have_key(:name)
+      expect(item[:attributes][:name]).to be_a(String)
+
+      expect(item[:attributes]).to have_key(:description)
+      expect(item[:attributes][:description]).to be_a(String)
+      
+      expect(item[:attributes]).to have_key(:unit_price)
+      expect(item[:attributes][:unit_price]).to be_a(Float)
+
+      expect(item[:attributes]).to have_key(:merchant_id)
+      expect(item[:attributes][:merchant_id]).to be_an(Integer)
+      expect([merchant1.id, merchant2.id]).to include(item[:attributes][:merchant_id])
+    end
   end
 end
 # return a 404 if the item is not found
